@@ -9,9 +9,7 @@ on:
 jobs:
   deploy-and-assign:
     runs-on: ubuntu-22.04
-    environment:
-      name: prod
-
+    steps:
       - name: Test
         shell: pwsh
         env:
