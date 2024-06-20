@@ -1,0 +1,20 @@
+name: Test
+run-name: ${{ github.workflow }} [${{ github.ref_name }}]
+
+env:
+  solution-path: policy-management
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-and-assign:
+    runs-on: ubuntu-22.04
+    environment:
+      name: prod
+
+      - name: Test
+        shell: pwsh
+        env:
+          solutionPath: ${{ env.solution-path }}
+        run: |
+          gci env:* | sort-object name
