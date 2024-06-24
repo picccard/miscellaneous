@@ -14,5 +14,6 @@ jobs:
         shell: pwsh
         env:
           solutionPath: ${{ env.solution-path }}
+          a_super_secret: ${{ secrets.SOME_SAMPLE_SECRET }}
         run: |
           gci env:* | sort-object name
