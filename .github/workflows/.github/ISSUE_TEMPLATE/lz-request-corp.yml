@@ -1,0 +1,121 @@
+name: New Landing Zone Request [Corp]
+description: Corp is for workloads that require connectivity with the corporate network.
+title: "New Landing Zone Request [Corp]"
+labels:
+  - "new-lz-corp"
+assignees:
+  - "Team CCoE"
+body:
+  - type: markdown
+    attributes:
+      value: "## General"
+
+  - type: dropdown
+    id: Division
+    attributes:
+      label: (Mandatory) Division or Domain
+      description: Top-level division or domain that owns the subscription or workload. Description is found [here]().
+      options:
+        - BOE
+    validations:
+      required: true
+
+  - type: dropdown
+    id: Department
+    attributes:
+      label: (Mandatory) Department or Subdepartment
+      description: This correlates to the business unit that the application or application team is associated with. Description is found [here]().
+      options:
+        - BKM
+    validations:
+      required: true
+
+  - type: input
+    id: servicename
+    attributes:
+      label: (Optional) Service name
+      description: The name of the service for the Landing Zone. Use this if the Landing Zone is dedicated to host a specific service. Do not use if the Landing Zone is dedicated to a specific Product Team and contains multiple services.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Permissions
+        By default, the following permissions are assigned:
+        | Role      | Permissions                                                                   | Group (MyAccess)                 |
+        | --------- | ----------------------------------------------------------------------------- | -------------------------------- |
+        | Owner     | Cost Management Contributor                                                   | SG-Division-Department-Owner     |
+        | Admin     | [PIM]: Owner</br>[Permanent]: Reader                                          | SG-Division-Department-Admin     |
+        | Developer | [PIM]: Contributor</br>[PIM]: Key Vault Administrator</br>[Permanent]: Reader | SG-Division-Department-Developer |
+
+  - type: textarea
+    id: additional-permissions
+    attributes:
+      label: (Optional) Additional permissions
+      description: "If you want to grant additional role groups permissions in the subscription, please write the request here. For every additional permission you need to provide at least: Permissions, Type (PIM or permanent) and Member group names."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Network
+        Specify the desired network information. If you are missing the IP range(s) or not sure which IP range(s) to enter, please leave the fields empty. The form will be reviewed and modified by the Cloud Platform team.
+
+  - type: input
+    id: vnet-prefix-dev
+    attributes:
+      label: (Mandatory) VNet address prefix for [Dev]
+      description: The address prefix for [Dev]. Leave empty for allocation by the Cloud Platform team.
+      placeholder: "0.0.0.0/0"
+
+  - type: checkboxes
+    id: vnet-options-dev
+    attributes:
+      label: VNet capabilities in [Dev]
+      options:
+        - label: Bastion
+        - label: DDoS Protection
+
+  - type: input
+    id: vnet-prefix-stg
+    attributes:
+      label: (Mandatory) VNet address prefix for [Stg]
+      description: The address prefix for [Stg]. Leave empty for allocation by the Cloud Platform team.
+      placeholder: "0.0.0.0/0"
+
+  - type: checkboxes
+    id: vnet-options-stg
+    attributes:
+      label: VNet capabilities in [Stg]
+      options:
+        - label: Bastion
+        - label: DDoS Protection
+
+  - type: input
+    id: vnet-prefix-prod
+    attributes:
+      label: (Mandatory) VNet address prefix for [Prod]
+      description: The address prefix for [Prod]. Leave empty for allocation by the Cloud Platform team.
+      placeholder: "0.0.0.0/0"
+
+  - type: checkboxes
+    id: vnet-options-prod
+    attributes:
+      label: VNet capabilities in [Prod]
+      options:
+        - label: Bastion
+        - label: DDoS Protection
+
+  - type: markdown
+    attributes:
+      value: "## Other"
+
+  - type: textarea
+    id: comments
+    attributes:
+      label: (Optional) Comments
+      description: If you have any comments or other requirements, please state them below.
+    validations:
+      required: false
