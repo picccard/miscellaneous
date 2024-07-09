@@ -1,4 +1,4 @@
-name: psmodulecache
+name: ModuleFast
 run-name: ${{ github.workflow }} [${{ github.ref_name }}]
 
 on:
