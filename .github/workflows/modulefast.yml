@@ -1,0 +1,21 @@
+name: psmodulecache
+run-name: ${{ github.workflow }} [${{ github.ref_name }}]
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-and-list-modules:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: ⚡ ModuleFast with Specification
+        uses: JustinGrote/ModuleFast-action@v0.0.1
+        with:
+          specification: |
+            Az=12.0.0
+            dbatools=1.1.0
+          
+      - name: Test
+        shell: pwsh
+        run: |
+          Get-Module -ListAvailable | Select-Object Version, Name | Sort-Object Name
