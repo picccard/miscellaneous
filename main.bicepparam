@@ -6,3 +6,5 @@ var defaultValues = '''
 }
 '''
 param mySecureValue = json(readEnvironmentVariable('COMMON_SECRETS', defaultValues)).mySecureValue
+
+// Adding a comment here
