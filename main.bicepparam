@@ -1,5 +1,6 @@
 using './main.bicep'
 
+// define defaults
 var defaultValues = '''
 {
   "mySecureValue": "noSecureValueFound404"
