@@ -12,10 +12,10 @@ jobs:
         uses: JustinGrote/ModuleFast-action@v0.0.1
         with:
           specification: |
-            Az=12.0.0
-            dbatools=1.1.0
+            Az=12.1.0
+            dbatools=2.1.14
           
-      - name: Test
+      - name: List Available Modules
         shell: pwsh
         run: |
           Get-Module -ListAvailable | Select-Object Version, Name | Sort-Object Name
