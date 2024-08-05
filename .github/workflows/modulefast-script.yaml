@@ -11,10 +11,7 @@ jobs:
       - name: Test
         shell: pwsh
         run: |
-          & ([scriptblock]::Create((iwr 'bit.ly/modulefast'))) @(
-            'Az=12.1.0',
-            'dbatools=2.1.14'
-          )
+          & ([scriptblock]::Create((iwr 'https://github.com/JustinGrote/ModuleFast/releases/latest/download/ModuleFast.ps1'))) -Specification 'Az=12.1.0','dbatools=2.1.14'
           
       - name: List Available Modules
         shell: pwsh
