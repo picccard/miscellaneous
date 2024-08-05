@@ -1,0 +1,20 @@
+name: Install-Module-cmdlet
+run-name: ${{ github.workflow }} [${{ github.ref_name }}]
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-and-list-modules:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install Modules
+        shell: pwsh
+        run: |
+          Install-Module -Name Az       -RequiredVersion 12.1.0 -Repository PSGallery -Force
+          Install-Module -Name dbatools -RequiredVersion 2.1.14 -Repository PSGallery -Force
+          
+      - name: List Available Modules
+        shell: pwsh
+        run: |
+          Get-Module -ListAvailable | Select-Object Version, Name | Sort-Object Name
