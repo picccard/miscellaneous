@@ -8,10 +8,14 @@ jobs:
   install-and-list-modules:
     runs-on: ubuntu-22.04
     steps:
-      - name: Test
+      - name: ⚡ ModuleFast with Specification
         shell: pwsh
         run: |
-          & ([scriptblock]::Create((iwr 'https://github.com/JustinGrote/ModuleFast/releases/latest/download/ModuleFast.ps1'))) -Specification 'Az=12.1.0','dbatools=2.1.14'
+          $modulesToInstall = @(
+            'Az=12.1.0',
+            'dbatools=2.1.14'
+          )
+          & ([scriptblock]::Create((iwr 'https://github.com/JustinGrote/ModuleFast/releases/latest/download/ModuleFast.ps1'))) -Specification $modulesToInstall
           
       - name: List Available Modules
         shell: pwsh
