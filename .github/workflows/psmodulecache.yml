@@ -11,7 +11,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v6.2
         with:
-          modules-to-cache: Az:12.1.0, dbatools:2.1.14
+          modules-to-cache: Az:12.1.0, dbatools:2.1.14, Microsoft.Graph:2.0.0
           
       - name: List Available Modules
         shell: pwsh
