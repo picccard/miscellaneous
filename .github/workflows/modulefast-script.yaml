@@ -13,7 +13,7 @@ jobs:
         run: |
           & ([scriptblock]::Create((iwr 'bit.ly/modulefast'))) @(
             'Az=12.1.0',
-            dbatools=2.1.14'
+            'dbatools=2.1.14'
           )
           
       - name: List Available Modules
