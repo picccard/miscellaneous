@@ -11,8 +11,10 @@ jobs:
       - name: Install Modules
         shell: pwsh
         run: |
-          Install-Module -Name Az       -RequiredVersion 12.1.0 -Repository PSGallery -Force
+          Install-Module -Name Az -RequiredVersion 12.1.0 -Repository PSGallery -Force
           Install-Module -Name dbatools -RequiredVersion 2.1.14 -Repository PSGallery -Force
+          Install-Module -Name Microsoft.Graph -RequiredVersion 2.0.0 -Repository PSGallery -Force
+          
           
       - name: List Available Modules
         shell: pwsh
