@@ -1,0 +1,23 @@
+name: Install-Module-cmdlet
+run-name: ${{ github.workflow }} [${{ github.ref_name }}]
+
+on:
+  workflow_dispatch:
+
+jobs:
+  install-and-list-modules:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install Modules
+        shell: pwsh
+        run: |
+          Install-PSResource -TrustRepository -RequiredResource  @{
+            Az = @{ version = '12.1.0' }
+            dbatools = @{ version = '2.14.0' }
+            # Microsoft.Graph = @{ version = '2.0.0' }
+          }
+
+      - name: List Available Modules
+        shell: pwsh
+        run: |
+          Get-Module -ListAvailable | Select-Object Version, Name | Sort-Object Name
