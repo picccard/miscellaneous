@@ -12,9 +12,14 @@ jobs:
         shell: pwsh
         run: |
           Install-PSResource -TrustRepository -RequiredResource  @{
-            Az = @{ version = '12.1.0' }
-            dbatools = @{ version = '2.14.0' }
-            # Microsoft.Graph = @{ version = '2.0.0' }
+            Az = @{
+              version = '[12.0.0,12.1.0]'
+              repository = 'PSGallery'
+            }
+            dbatools = @{
+              version = '[2.10.0,2.14.0]'
+              repository = 'PSGallery'
+            }
           }
 
       - name: List Available Modules
