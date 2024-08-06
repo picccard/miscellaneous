@@ -20,6 +20,10 @@ jobs:
               version = '2.1.14'
               repository = 'PSGallery'
             }
+            'Microsoft.Graph' = @{
+              version = '2.0.0'
+              repository = 'PSGallery'
+            }
           }
 
       - name: List Available Modules
