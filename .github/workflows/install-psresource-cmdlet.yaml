@@ -1,4 +1,4 @@
-name: Install-Module-cmdlet
+name: Install-PSResource-cmdlet
 run-name: ${{ github.workflow }} [${{ github.ref_name }}]
 
 on:
