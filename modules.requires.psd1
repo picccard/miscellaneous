@@ -1,7 +1,6 @@
 @{
   'Microsoft365DSC'='=1.24.1002.1'
   'Az.Accounts'='=3.0.2'
-  'Az.ResourceGraph'='=1.0.0'
   'Az.Resources'='=7.2.0'
   'Az.ResourceGraph'='=1.0.0'
   'Az.SecurityInsights'='=3.1.2'
