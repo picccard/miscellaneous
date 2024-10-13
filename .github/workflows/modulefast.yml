@@ -8,6 +8,7 @@ jobs:
   install-and-list-modules:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v3
       - name: ⚡ ModuleFast with Specification
         uses: JustinGrote/ModuleFast-action@v0.0.1
         with:
