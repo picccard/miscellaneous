@@ -21,7 +21,7 @@
   'Microsoft.Graph.Beta.Teams'='=2.23.0'
   'Microsoft.Graph.DeviceManagement.Administration'='=2.23.0'
   'Microsoft.Graph.Beta.DirectoryObjects'='=2.23.0'
-  'Microsoft.Graph.Groups='='2.23.0'
+  'Microsoft.Graph.Groups='='=2.23.0'
   'Microsoft.Graph.Beta.Groups'='=2.23.0'
   'Microsoft.Graph.Planner'='=2.23.0'
   'Microsoft.Graph.Sites'='=2.23.0'
