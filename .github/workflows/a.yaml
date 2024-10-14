@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-and-assign:
-    runs-on: ubuntu-22.04
+    runs-on: windows-latest
     steps:
       - name: Test
         shell: pwsh
@@ -17,3 +17,4 @@ jobs:
           a_super_secret: ${{ secrets.SOME_SAMPLE_SECRET }}
         run: |
           gci env:* | sort-object name
+          gci -Path "$env:ProgramFiles\WindowsPowerShell\Modules"
