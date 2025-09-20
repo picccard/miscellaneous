@@ -1,0 +1,28 @@
+on:
+  workflow_dispatch: {}
+
+name: Sync Azure File Share content to Blob Container
+
+jobs:
+
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Copy file to Azure Blob Storage
+      env:
+        AZURE_STORAGE_ACCOUNT: stfsblobsync
+        AZURE_CONTAINER_NAME: pics
+        AZURE_FILESHARE_NAME: pics
+        AZCOPY_AUTO_LOGIN_TYPE: AZCLI # This is the auto login type you want
+        AZCOPY_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }} # Don't forget this
+      run: |
+        echo ""
+        azcopy copy "https://$AZURE_STORAGE_ACCOUNT.file.core.windows.net/$AZURE_FILESHARE_NAME" "https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME" --recursive=true --overwrite=ifSourceNewer
