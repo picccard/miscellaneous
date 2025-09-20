@@ -28,8 +28,10 @@ jobs:
       id: runner_ip
       run: |
         ADDR=$(curl -k "https://checkip.amazonaws.com")
-        az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR
-        sleep 3s
+        az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR > /dev/null
+        echo "Waiting for 3 seconds..." ; sleep 1s
+        echo "Waiting for 2 seconds..." ; sleep 1s
+        echo "Waiting for 1 seconds..." ; sleep 1s
 
     - name: azcopy fileshare to blob container
       env:
@@ -41,9 +43,9 @@ jobs:
 
     - name: Print logs
       if: always()
-      run: cat ./.azcopy/*
+      run: cat /home/runner/.azcopy/*.log
 
     - name: Remove network rule
       if: always()
-      run: az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
+      run: az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }} > /dev/null
 
