@@ -6,6 +6,12 @@ name: Sync FileShare to Blob
 permissions:
   id-token: write
 
+env:
+  AZURE_RESOURCE_GROUP: rg-fs-blob-sync
+  AZURE_STORAGE_ACCOUNT: stfsblobsync
+  AZURE_CONTAINER_NAME: pics
+  AZURE_FILESHARE_NAME: pics
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -18,13 +24,20 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Copy file to Azure Blob Storage
+    - name: Add network rule
+      id: runner_ip
+      run: |
+        ADDR=$(curl -k "https://checkip.amazonaws.com")
+        az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group AZURE_RESOURCE_GROUP --ip-address $ADDR
+
+    - name: azcopy fileshare to blob container
       env:
-        AZURE_STORAGE_ACCOUNT: stfsblobsync
-        AZURE_CONTAINER_NAME: pics
-        AZURE_FILESHARE_NAME: pics
         AZCOPY_AUTO_LOGIN_TYPE: AZCLI # This is the auto login type you want
         AZCOPY_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }} # Don't forget this
       run: |
         echo ""
         azcopy copy "https://$AZURE_STORAGE_ACCOUNT.file.core.windows.net/$AZURE_FILESHARE_NAME" "https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME" --recursive=true --overwrite=ifSourceNewer
+
+    - name: Remove network rule
+      run: |
+        az storage account network-rule remove --account-name AZURE_STORAGE_ACCOUNT --resource-group AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
