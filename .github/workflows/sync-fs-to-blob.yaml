@@ -1,10 +1,12 @@
 on:
   workflow_dispatch: {}
 
-name: Sync Azure File Share content to Blob Container
+name: Sync FileShare to Blob
+
+permissions:
+  id-token: write
 
 jobs:
-
   sync:
     runs-on: ubuntu-latest
     steps:
