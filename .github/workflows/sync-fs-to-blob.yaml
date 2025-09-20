@@ -28,7 +28,7 @@ jobs:
       id: runner_ip
       run: |
         ADDR=$(curl -k "https://checkip.amazonaws.com")
-        az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group AZURE_RESOURCE_GROUP --ip-address $ADDR
+        az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR
 
     - name: azcopy fileshare to blob container
       env:
@@ -40,4 +40,4 @@ jobs:
 
     - name: Remove network rule
       run: |
-        az storage account network-rule remove --account-name AZURE_STORAGE_ACCOUNT --resource-group AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
+        az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
