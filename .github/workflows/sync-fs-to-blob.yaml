@@ -29,6 +29,7 @@ jobs:
       run: |
         ADDR=$(curl -k "https://checkip.amazonaws.com")
         az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR
+        sleep 3s
 
     - name: azcopy fileshare to blob container
       env:
