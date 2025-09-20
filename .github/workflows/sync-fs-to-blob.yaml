@@ -38,6 +38,11 @@ jobs:
         echo ""
         azcopy copy "https://$AZURE_STORAGE_ACCOUNT.file.core.windows.net/$AZURE_FILESHARE_NAME" "https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME" --recursive=true --overwrite=ifSourceNewer
 
+    - name: Print logs
+      if: always()
+      run: cat ./.azcopy/*
+
     - name: Remove network rule
-      run: |
-        az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
+      if: always()
+      run: az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }}
+
