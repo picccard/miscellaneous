@@ -1,5 +1,10 @@
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      print_azcopy_log:
+        type: boolean
+        description: 'Print azcopy log?'
+        default: false
 
 name: Sync FileShare to Blob
 
@@ -11,6 +16,7 @@ env:
   AZURE_STORAGE_ACCOUNT: stfsblobsync
   AZURE_CONTAINER_NAME: pics
   AZURE_FILESHARE_NAME: pics
+  NETWORK_RULE: true
 
 jobs:
   sync:
@@ -26,6 +32,7 @@ jobs:
 
     - name: Add network rule
       id: runner_ip
+      if: env.NETWORK_RULE == true
       run: |
         ADDR=$(curl -k "https://checkip.amazonaws.com")
         az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR > /dev/null
@@ -55,11 +62,11 @@ jobs:
         azcopy sync $source $destination --recursive=true --delete-destination=true
 
     - name: Print logs
-      if: always()
+      if: inputs.print_azcopy_log == true
       run: cat /home/runner/.azcopy/*.log
 
     - name: Remove network rule
-      if: always()
+      if: steps.runner_ip.outcome == 'success'
       run: |
         az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }} > /dev/null
         #az storage account update --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_STORAGE_ACCOUNT --default-action Deny > /dev/null
