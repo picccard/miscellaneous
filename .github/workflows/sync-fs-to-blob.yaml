@@ -64,6 +64,8 @@ jobs:
         $destination = "https://{0}.blob.core.windows.net/{1}?{2}" -f $env:AZURE_STORAGE_ACCOUNT, $env:AZURE_CONTAINER_NAME, $sas
         # azcopy copy $source $destination --recursive=true --overwrite=ifSourceNewer
         azcopy sync $source $destination --recursive=true --delete-destination=true
+        # azcopy sync --include-pattern="*.jpg;*.pdf;exactName"
+        # azcopy sync --include-pattern="*file1.jpg;*file2.png;*file3.pdf"
 
     - name: Print logs
       if: inputs.print_azcopy_log == true
