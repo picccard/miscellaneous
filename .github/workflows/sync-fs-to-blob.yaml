@@ -49,7 +49,9 @@ jobs:
         $allowedPermissions = (@('read','write','delete','list','add','create') | ForEach-Object { $_[0] }) -join ''
         # $sas = az storage account generate-sas --account-name stfsblobsync --permissions rwdlac --resource-types co --services fb --expiry (Get-Date).AddMinutes(3).ToString('yyyy-MM-ddTHH:mm:ssZ') -o tsv
         $sas = az storage account generate-sas --account-name $env:AZURE_STORAGE_ACCOUNT --permissions $allowedPermissions --resource-types $allowedResourceTypes --services $allowedServices --expiry $expiry -o tsv
-        azcopy copy "https://$env:AZURE_STORAGE_ACCOUNT.file.core.windows.net/$env:AZURE_FILESHARE_NAME?$sas" "https://$env:AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$env:AZURE_CONTAINER_NAME?$sas" --recursive=true --overwrite=ifSourceNewer
+        $source = "https://{0}.file.core.windows.net/{1}?{2}" -f $env:AZURE_STORAGE_ACCOUNT, $env:AZURE_FILESHARE_NAME, $sas
+        $destination = "https://{0}.blob.core.windows.net/{1}?{2}" -f $env:AZURE_STORAGE_ACCOUNT, $env:AZURE_CONTAINER_NAME, $sas
+        azcopy copy $source $destination --recursive=true --overwrite=ifSourceNewer
 
     - name: Print logs
       if: always()
