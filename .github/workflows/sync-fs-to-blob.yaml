@@ -5,6 +5,10 @@ on:
         type: boolean
         description: 'Print azcopy log?'
         default: false
+      add_network_rule:
+        type: boolean
+        description: 'Add network rule?'
+        default: true
 
 name: Sync FileShare to Blob
 
@@ -32,7 +36,7 @@ jobs:
 
     - name: Add network rule
       id: runner_ip
-      if: env.NETWORK_RULE == true
+      if: inputs.add_network_rule == true
       run: |
         ADDR=$(curl -k "https://checkip.amazonaws.com")
         az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR > /dev/null
