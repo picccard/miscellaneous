@@ -51,7 +51,8 @@ jobs:
         $sas = az storage account generate-sas --account-name $env:AZURE_STORAGE_ACCOUNT --permissions $allowedPermissions --resource-types $allowedResourceTypes --services $allowedServices --expiry $expiry -o tsv
         $source = "https://{0}.file.core.windows.net/{1}?{2}" -f $env:AZURE_STORAGE_ACCOUNT, $env:AZURE_FILESHARE_NAME, $sas
         $destination = "https://{0}.blob.core.windows.net/{1}?{2}" -f $env:AZURE_STORAGE_ACCOUNT, $env:AZURE_CONTAINER_NAME, $sas
-        azcopy copy $source $destination --recursive=true --overwrite=ifSourceNewer
+        # azcopy copy $source $destination --recursive=true --overwrite=ifSourceNewer
+        azcopy sync $source $destination --recursive=true --delete-destination=true
 
     - name: Print logs
       if: always()
