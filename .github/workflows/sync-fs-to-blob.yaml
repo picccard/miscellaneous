@@ -29,7 +29,7 @@ jobs:
       run: |
         #ADDR=$(curl -k "https://checkip.amazonaws.com")
         #az storage account network-rule add --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address $ADDR > /dev/null
-        az storage account update --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_STORAGE_ACCOUNT --default-action Allow
+        #az storage account update --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_STORAGE_ACCOUNT --default-action Allow > /dev/null
         echo "Waiting for 3 seconds..." ; sleep 1s
         echo "Waiting for 2 seconds..." ; sleep 1s
         echo "Waiting for 1 seconds..." ; sleep 1s
@@ -40,9 +40,16 @@ jobs:
         #AZCOPY_MSI_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
         AZCOPY_AUTO_LOGIN_TYPE: AZCLI # This is the auto login type you want
         AZCOPY_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }} # Don't forget this
+      shell: pwsh
       run: |
         echo ""
-        azcopy copy "https://$AZURE_STORAGE_ACCOUNT.file.core.windows.net/$AZURE_FILESHARE_NAME" "https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$AZURE_CONTAINER_NAME" --recursive=true --overwrite=ifSourceNewer
+        $expiry = (Get-Date).AddMinutes(3).ToString('yyyy-MM-ddTHH:mm:ssZ')
+        $allowedServices = (@('container','object') | ForEach-Object { $_[0] }) -join ''
+        $allowedResourceTypes = (@('blob','file') | ForEach-Object { $_[0] }) -join ''
+        $allowedPermissions = (@('read','write','delete','list','add','create') | ForEach-Object { $_[0] }) -join ''
+        # $sas = az storage account generate-sas --account-name stfsblobsync --permissions rwdlac --resource-types co --services fb --expiry (Get-Date).AddMinutes(3).ToString('yyyy-MM-ddTHH:mm:ssZ') -o tsv
+        $sas = az storage account generate-sas --account-name $env:AZURE_STORAGE_ACCOUNT --permissions $allowedPermissions --resource-types $allowedResourceTypes --services $allowedServices --expiry $expiry -o tsv
+        azcopy copy "https://$env:AZURE_STORAGE_ACCOUNT.file.core.windows.net/$env:AZURE_FILESHARE_NAME?$sas" "https://$env:AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$env:AZURE_CONTAINER_NAME?$sas" --recursive=true --overwrite=ifSourceNewer
 
     - name: Print logs
       if: always()
@@ -52,6 +59,6 @@ jobs:
       if: always()
       run: |
         #az storage account network-rule remove --account-name $AZURE_STORAGE_ACCOUNT --resource-group $AZURE_RESOURCE_GROUP --ip-address ${{ steps.runner_ip.ADDR }} > /dev/null
-        az storage account update --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_STORAGE_ACCOUNT --default-action Deny
+        #az storage account update --resource-group $AZURE_RESOURCE_GROUP --name $AZURE_STORAGE_ACCOUNT --default-action Deny > /dev/null
         
 
